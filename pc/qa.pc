@@ -1,0 +1,459 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include <signal.h>
+#include "..\header\common.h"
+#include "..\header\date.h"
+#include "..\header\file.h"
+#include "..\header\validation.h"
+
+/* �萔�̒�` */
+const char USER_NAME[] = "QA";
+const char PASSWORD[] = "qsATXjfZ";
+const char CONNECT_STRING[] = "192.168.1.2/orcl";
+const char OUTPUT_PATH[] = ".\\data\\";
+const char SEPARATE_MSG[] = "----------------------------------------------------------------------------------------------\n";
+const char DESTINATION_DIR[] = "/qa_system/data/";
+
+/* �ϐ��̒�` */
+char output_file_path[256] = "";
+FILE* fp;
+
+/* ���b�Z�[�W�̒�` */
+const char INPUT_NAME_MSG[] = "���O����͂��Ă��������B\n";
+const char RESULT_MSG[] = "�y���ʁz\n";
+
+/* �x���萔�̒�` */
+char WARNING_MSG_LIST[256][128];
+
+/* �G���[�萔�̒�` */
+char ERROR_MSG_LIST[256][128];
+
+/* �֐��̐錾 */
+void setMsg();
+void procWarning(int);
+void procError(int);
+
+
+/* �z�X�g�ϐ��̐錾 */
+EXEC SQL BEGIN DECLARE SECTION;
+    varchar username[20];
+    varchar password[20];
+    varchar connect_string[56];
+    int category_count[256];
+    int h_id[256];
+    char h_category[256][64];
+    char h_question[256][256];
+    char h_choice[256][256];
+    char h_answer[256][2];
+    int h_q_total[256];
+    int h_correct_total[256];
+    char subquery[256];
+    char query[256];
+    char category_query[256];
+EXEC SQL END DECLARE SECTION;
+
+EXEC SQL INCLUDE sqlca;
+
+int main(argc, argv)
+int argc;
+char *argv[];
+{
+    int i = 0;
+    int question_num = 0;	// ��萔
+    int correct_answers_cnt = 0;	// ����
+    char name[64];	// ���O
+    char category[64];	// ���̃J�e�S��
+    char kaito[3];	// ���[�U�̉�
+    char kaito_msg[5];	// ���[�U�̉񓚁i�o�͗p�j
+    char correctness_ary[256][256]; // ���댋�ʂ��i�[
+    char choice[4][64]; // ���̑I����
+    char output_file_name[64]; // �o�̓t�@�C����
+	char convert_file_path[256];	// �����R�[�h�ϊ���̃t�@�C���p�X
+    char start_msg[256];	// ���̊J�n���b�Z�[�W
+    char question_msg[256];	// ��蕶
+    char choice_msg[256];	// �I�����b�Z�[�W
+    char result_detail_msg[256]; // ���ʏڍ׃��b�Z�[�W
+    char result_kaito_msg[16];	// �񓚌��ʃ��b�Z�[�W
+    char destination_file_path[128]; // ���M��t�@�C���p�X
+    char question_no_str[16]; // ���M��t�@�C���p�X
+    double correct_rate = 0;
+
+    /* ���b�Z�[�W�i�[�p�z��Ƀ��b�Z�[�W���i�[ */
+    setMsg();
+
+    /* �����`�F�b�N */
+    if (argc != 3) {
+    	procError(100);
+    	return 100;
+    }
+
+    /* ���̓`�F�b�N */
+    /* �������`�F�b�N */
+    if (validLength(argv[1], 0, 50)) {
+    	procError(101);
+    	return 101;
+    }
+    /* ���l�`�F�b�N */
+    if (validInt(argv[2])) {
+    	procError(103);
+    	return 103;
+    }
+    /* int�^�͈̔͂𒴂��������`�F�b�N */
+    if (atoi(argv[2]) < 0) {
+		procError(105);
+    	return 105;
+    }
+    /* ���l�召�`�F�b�N */
+    switch (validSize(atoi(argv[2]), 1, 100)) {
+    	case 1:
+    		procError(104);
+        	return 104;
+        case 2:
+			procError(105);
+        	return 105;
+    }
+
+    /* ������ϐ��Ɋi�[ */
+    strcpy(category, argv[1]);
+    question_num = atoi(argv[2]);
+
+    /* ��O�錾 */
+    EXEC SQL WHENEVER SQLERROR GOTO errorpt;
+
+    /* Oracle�ڑ� */
+    strcpy(username.arr, USER_NAME);
+    username.len=strlen(username.arr);
+    strcpy(password.arr, PASSWORD);
+    password.len=strlen(password.arr);
+    strcpy(connect_string.arr, CONNECT_STRING);
+    connect_string.len=strlen(connect_string.arr);
+    EXEC SQL CONNECT :username IDENTIFIED BY :password USING :connect_string;
+
+    /* �J�e�S�����݃`�F�b�N */
+    sprintf(category_query, "SELECT COUNT(*) FROM question_answer WHERE category = '%s' AND ROWNUM <= %d", category);
+    EXEC SQL PREPARE COUNT_CATEGORY_SQL1 FROM :category_query;
+    EXEC SQL DECLARE COUNT_CATEGORY_CUR1 CURSOR FOR COUNT_CATEGORY_SQL1;
+    EXEC SQL OPEN COUNT_CATEGORY_CUR1;
+    EXEC SQL FETCH COUNT_CATEGORY_CUR1 INTO category_count;
+    EXEC SQL CLOSE COUNT_CATEGORY_CUR1;
+    if (category_count[0] < 1) {
+    	procError(102);
+    	return 102;
+    }
+
+    /* �N�G�� */
+    strcpy(subquery, "SELECT DBMS_RANDOM.RANDOM() AS rand, question_answer.* FROM question_answer ORDER BY rand");
+    sprintf(query, "SELECT id, category, question, choice, answer, q_total, correct_total FROM (%s) WHERE category = '%s' AND ROWNUM <= %d", subquery, category, question_num);
+
+    /* ������query����͂���SQL1�Ƃ������O���w�肷�� */
+    EXEC SQL PREPARE SQL1 FROM :query;
+    /* CUR1�Ƃ����J�[�\����SQL1�Ɋ֘A�t�������Ă��� */
+    EXEC SQL DECLARE CUR1 CURSOR FOR SQL1;
+    /* Oracle�J�[�\�������蓖�āA���̓z�X�g�ϐ��Ƀo�C���h���A�⍇�������s���܂� */
+    EXEC SQL OPEN CUR1;
+    /* �I�����X�g���̗�l��INTO��̑Ή�����z�X�g�ϐ��Ɋ��蓖�Ă���A�J�[�\�������̍s�ɐi�߂�  */
+    EXEC SQL FETCH CUR1 INTO h_id, h_category, h_question, h_choice,h_answer, h_q_total,h_correct_total;
+    /* �J�[�\�����g�p�֎~�ȍ~FETCH�ł��Ȃ��B */
+    EXEC SQL CLOSE CUR1;
+
+    /* ��萔�`�F�b�N */
+    i = question_num - 1;
+    if (h_id[i] == 0) {
+		procWarning(1);
+    	while(i > 0){
+    		if (h_id[i] != 0) {
+    			question_num = i + 1;
+    			break;
+    		}
+    		i--;
+    	}
+    }
+
+    /* �e�X�g���s�҂̖��O�̓��͂��󂯕t����B */
+    printf(INPUT_NAME_MSG);
+    while (1) {
+    	if (getsn(name, 64) == NULL) {
+    		exit(0);
+    	}
+        strcpy(name, trim(name));
+
+        /* ���O�̕������`�F�b�N */
+        if (validLength(name, 0, 30)) {
+        	procWarning(5);
+        } else {
+        	break;
+        }
+    }
+
+    /* ���݂̓������擾 */
+    char datetime[16];
+    struct tm *local = getNowDateTime();
+    sprintf(datetime, "%4d%02d%02d%02d%02d%02d", local->tm_year, local->tm_mon, local->tm_mday, local->tm_hour, local->tm_min, local->tm_sec);
+
+    /* �o�̓t�@�C�� */
+    sprintf(output_file_name, "%s-%s-%s.txt", datetime, category, name);
+    sprintf(output_file_path, "%s%s", OUTPUT_PATH, output_file_name);
+
+    /* �o�͐�f�B���N�g���̍쐬 */
+    _mkdir(OUTPUT_PATH);
+
+    /* �t�@�C�����I�[�v������ */
+	if ((fp = fopen(output_file_path, "w")) == NULL) {
+		// �t�@�C���I�[�v���G���[
+		procError(106);;
+    	return 106;
+	}
+
+    /* ��ʕ\���������iOS�ˑ��j */
+    system("cls");
+
+	/* �o�菈�� */
+    sprintf(start_msg, "*** %s�Ɋւ������%d��o�肵�܂��B ***\n", category, question_num);
+    printf("%s", start_msg);
+    if (fputs(start_msg , fp) == EOF) {
+    	// �t�@�C���������݃G���[
+		fclose(fp);
+		deleteFile(output_file_path);
+		procError(106);
+		return 106;
+    }
+    for (i=0; i<question_num; i++) {
+    	if (h_id[i] == 0) {
+    		if (i == 0) {
+    			procError(108);
+    			return 108;
+    		}
+    		break;
+    	}
+
+        /* �o�� */
+        sprintf(question_msg, "Q%d.%s\n", i+1, trim(h_question[i]));
+        printf("%s", question_msg);
+        if (fputs(question_msg , fp) == EOF) {
+        	// �t�@�C���������݃G���[
+    		fclose(fp);
+    		deleteFile(output_file_path);
+    		procError(106);
+    		return 106;
+        }
+        sscanf(h_choice[i], "%[^,],%[^,],%[^,],%s", choice[0], choice[1], choice[2], choice[3]);
+        sprintf(choice_msg, "%s %s %s %s\n", choice[0], choice[1], choice[2], choice[3]);
+        printf(choice_msg);
+        if (fputs(choice_msg , fp) == EOF) {
+        	// �t�@�C���������݃G���[
+    		fclose(fp);
+    		deleteFile(output_file_path);
+    		procError(106);
+    		return 106;
+        }
+
+        /* �񓚏��� */
+        while (1) {
+        	if (getsn(kaito, 3) == NULL) {
+        		exit(0);
+        	}
+            if (strcmp(kaito, "A") == 0 || strcmp(kaito, "B") == 0  || strcmp(kaito, "C") == 0  || strcmp(kaito, "D") == 0) {
+            	break;
+            } else {
+        		procWarning(2);
+            }
+        }
+        sprintf(kaito_msg, "%s\n", kaito);
+    	if (fputs(kaito_msg , fp) == EOF) {
+    		// �t�@�C���������݃G���[
+    		fclose(fp);
+    		deleteFile(output_file_path);
+    		procError(106);
+    		return 106;
+    	}
+
+        /* ���딻�� */
+        if (strcmp(h_answer[i], kaito) == 0){
+            strcpy(correctness_ary[i], "��");
+            correct_answers_cnt++;
+
+            /* �f�[�^�x�[�X�X�V���� */
+            EXEC SQL UPDATE question_answer
+                SET q_total = q_total + 1, correct_total = correct_total + 1
+                WHERE id = :h_id[i];
+        } else {
+            strcpy(correctness_ary[i], "�~");
+
+            /* �f�[�^�x�[�X�X�V���� */
+            EXEC SQL UPDATE question_answer
+                SET q_total = q_total + 1
+                WHERE id = :h_id[i];
+        }
+
+        printf("%s", SEPARATE_MSG);
+        if (fputs(SEPARATE_MSG , fp) == EOF) {
+        	// �t�@�C���������݃G���[
+    		fclose(fp);
+    		deleteFile(output_file_path);
+    		procError(106);
+    		return 106;
+        }
+    }
+
+    /* ���ʏo�� */
+	printf("%s", RESULT_MSG);
+    if (fputs(RESULT_MSG , fp) == EOF) {
+    	// �t�@�C���������݃G���[
+		fclose(fp);
+		deleteFile(output_file_path);
+		procError(106);
+		return 106;
+    }
+    correct_rate = (double)correct_answers_cnt / (double)question_num * 100;
+    if (correct_rate != 0) {
+    	/* �����_�ȉ���؂�̂Ă邽�� */
+    	correct_rate -= 0.5;
+    }
+    sprintf(result_detail_msg, "%d�⒆%d�␳�����܂����B�i���𗦁F %.0f%%�j\n", question_num, correct_answers_cnt, correct_rate);
+    printf("%s", result_detail_msg);
+    if (fputs(result_detail_msg , fp) == EOF) {
+    	// �t�@�C���������݃G���[
+		fclose(fp);
+		deleteFile(output_file_path);
+		procError(106);
+		return 106;
+    }
+    for (int j=0; j<i; j++) {
+    	sprintf(question_no_str, "%s%d.", "Q", j+1);
+    	sprintf(result_kaito_msg, "%-5s%s", question_no_str, correctness_ary[j]);
+    	if (strcmp(correctness_ary[j], "�~") == 0) {
+    		/* �����𕶎���ɕt�^ */
+        	sprintf(result_kaito_msg, "%s ������%s\n", result_kaito_msg, h_answer[j]);
+    	} else {
+        	sprintf(result_kaito_msg, "%s\n", result_kaito_msg);
+    	}
+    	printf("%s", result_kaito_msg);
+        if (fputs(result_kaito_msg , fp) == EOF) {
+        	// �t�@�C���������݃G���[
+    		fclose(fp);
+    		deleteFile(output_file_path);
+    		procError(106);
+    		return 106;
+        }
+    }
+
+    /* �R�~�b�g */
+    EXEC SQL COMMIT;
+
+    /* �t�@�C�����o�� */
+    printf("�u%s�v�Ƃ����t�@�C�����ŏo�͂���܂����B\n", output_file_name);
+
+    /* �o�b�t�@���o�͂���B */
+    fflush(fp);
+
+    /* �t�@�C�����N���[�Y */
+    fclose(fp);
+
+    /* �t�@�C���]������ */
+    /* �t�@�C���]���s�\�ȏꍇ�͌x���\�������A�������X�L�b�v */
+    if (existWinSCP() != 0) {
+		/* �]���p�c�[�����Ȃ� */
+    	procWarning(3);
+    	/* �����X�L�b�v�����Ȃ̂ŁA����I�� */
+    	return 0;
+    }
+    if (existIconv() != 0) {
+		/* �����R�[�h�ϊ��p�c�[�����Ȃ� */
+    	procWarning(4);
+    	/* �����X�L�b�v�����Ȃ̂ŁA����I�� */
+    	return 0;
+    }
+
+	/* �]���p�t�@�C���̍쐬*/
+	if (iconvFile(output_file_path, convert_file_path, "sjis", "UTF-8") != 0) {
+		/* �����G���R�[�h���s */
+		procWarning(4);
+    	/* �����X�L�b�v�����Ȃ̂ŁA����I�� */
+    	return 0;
+	}
+
+	/* �t�@�C���]�� */
+	strcpy(destination_file_path, DESTINATION_DIR);
+	strcat(destination_file_path, output_file_name);
+	if (putFile(output_file_path, destination_file_path) != 0) {
+		/* �]�����s */
+		procWarning(3);
+    	/* �����X�L�b�v�����Ȃ̂ŁA����I�� */
+		return 0;
+	}
+
+	/* �t�@�C���]���܂Ő���������A�t�@�C�����폜���� */
+	deleteFile(output_file_path);
+	deleteFile(convert_file_path);
+
+    return 0;
+
+errorpt:
+    //printf("\n\n%-70s \n",sqlca.sqlerrm.sqlerrmc);
+
+    /* �������[�v��� */
+    EXEC SQL WHENEVER SQLERROR CONTINUE;
+    /* ���[���o�b�N */
+	EXEC SQL ROLLBACK;
+
+	/* �t�@�C�����J���Ă���ꍇ���� */
+	if (fp != NULL) {
+		fclose(fp);
+	}
+
+	/* �t�@�C�������݂���ꍇ�͍폜���� */
+	if (existFile(output_file_path) == 1) {
+		deleteFile(output_file_path);
+	}
+	procError(255);
+	return 255;
+}
+
+void setMsg() {
+	strcpy(WARNING_MSG_LIST[1], "�w�肳�ꂽ���ɑ΂��Ė�萔���s�����Ă��܂��B�o�^����Ă�����̐������o�肳��܂��B\n");
+	strcpy(WARNING_MSG_LIST[2], "���ւ̉񓚂́uA�v�uB�v�uC�v�uD�v�����ꂩ�œ��͂��Ă��������B\n");
+	strcpy(WARNING_MSG_LIST[3], "�t�@�C���]���Ɏ��s���܂����B���[�J���ł̂ݕۑ�����܂��B\n");
+	strcpy(WARNING_MSG_LIST[4], "Linux�p�ϊ��t�@�C���̍쐬�Ɏ��s���܂����B���[�J���ł̂ݕۑ�����܂��B\n");
+	strcpy(WARNING_MSG_LIST[5], "���O��30�����ȓ��œ��͂��Ă��������B\n");
+	strcpy(ERROR_MSG_LIST[100], "�������w�肳��Ă��܂���B���̂悤�Ȍ`���Ŏ��s���Ă��������B qa.exe [�J�e�S��] [��萔]\n");
+	strcpy(ERROR_MSG_LIST[101], "�J�e�S���̕��������������܂��B\n");
+	strcpy(ERROR_MSG_LIST[102], "�w�肳�ꂽ�J�e�S���͑��݂��܂���B\n");
+	strcpy(ERROR_MSG_LIST[103], "��萔�͔��p�����œ��͂��Ă��������B\n");
+	strcpy(ERROR_MSG_LIST[104], "��萔��1�ȏ�̒l�œ��͂��Ă��������B\n");
+	strcpy(ERROR_MSG_LIST[105], "��萔��100�ȉ��̒l�œ��͂��Ă��������B\n");
+	strcpy(ERROR_MSG_LIST[106], "�t�@�C���������݂Ɏ��s���܂����B\n");
+	strcpy(ERROR_MSG_LIST[107], "�t�@�C���̓]���Ɏ��s���܂����B\n");
+	strcpy(ERROR_MSG_LIST[255], "�v���O�������ُ�I�����܂����B\n");
+}
+
+/**
+ * �x���������s���B
+ * @param warning_code: �x���R�[�h
+ */
+void procWarning(int warning_code) {
+	char *p, *msg[256];
+	strcpy(msg, WARNING_MSG_LIST[warning_code]);
+	/* PowerShell�p�̃G�X�P�[�v������t�^ */
+	while ((p = strchr(msg, ' '))!=NULL) *p = '`';
+	/* �x�����b�Z�[�W���o�� */
+	printf("[WARNING][%d]%s", warning_code, WARNING_MSG_LIST[warning_code]);
+	/* �C�x���g�o�^ */
+	registerEvent("Warning", warning_code, msg);
+}
+
+/**
+ * �G���[�������s���B
+ * @param error_code: �G���[�R�[�h
+ */
+void procError(int error_code) {
+	char *p, *msg[256];
+	strcpy(msg, ERROR_MSG_LIST[error_code]);
+	/* PowerShell�p�̃G�X�P�[�v������t�^ */
+	while ((p = strchr(msg, ' '))!=NULL) *p = '`';
+	/* �G���[���b�Z�[�W���o�� */
+	printf("[ERROR][%d]%s", error_code, ERROR_MSG_LIST[error_code]);
+	/* �C�x���g�o�^ */
+	registerEvent("Error", error_code, msg);
+}
