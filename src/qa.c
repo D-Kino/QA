@@ -20,10 +20,10 @@ typedef void * SQL_CONTEXT;
 /* Object support */
 struct sqltvn
 {
-  unsigned char *tvnvsn;
-  unsigned short tvnvsnl;
+  unsigned char *tvnvsn; 
+  unsigned short tvnvsnl; 
   unsigned char *tvnnm;
-  unsigned short tvnnml;
+  unsigned short tvnnml; 
   unsigned char *tvnsnm;
   unsigned short tvnsnml;
 };
@@ -31,10 +31,10 @@ typedef struct sqltvn sqltvn;
 
 struct sqladts
 {
-  unsigned int adtvsn;
-  unsigned short adtmode;
-  unsigned short adtnum;
-  sqltvn adttvn[1];
+  unsigned int adtvsn; 
+  unsigned short adtmode; 
+  unsigned short adtnum;  
+  sqltvn adttvn[1];       
 };
 typedef struct sqladts sqladts;
 
@@ -45,9 +45,9 @@ static struct sqladts sqladt = {
 /* Binding to PL/SQL Records */
 struct sqltdss
 {
-  unsigned int tdsvsn;
-  unsigned short tdsnum;
-  unsigned char *tdsval[1];
+  unsigned int tdsvsn; 
+  unsigned short tdsnum; 
+  unsigned char *tdsval[1]; 
 };
 typedef struct sqltdss sqltdss;
 static struct sqltdss sqltds =
@@ -161,7 +161,7 @@ static const short sqlcud0[] =
 #include "..\header\file.h"
 #include "..\header\validation.h"
 
-/* ï¿½è”ï¿½Ì’ï¿½` */
+/* ’è”‚Ì’è‹` */
 const char USER_NAME[] = "QA";
 const char PASSWORD[] = "qsATXjfZ";
 const char CONNECT_STRING[] = "192.168.1.2/orcl";
@@ -169,36 +169,36 @@ const char OUTPUT_PATH[] = ".\\data\\";
 const char SEPARATE_MSG[] = "----------------------------------------------------------------------------------------------\n";
 const char DESTINATION_DIR[] = "/qa_system/data/";
 
-/* ï¿½Ïï¿½ï¿½Ì’ï¿½` */
+/* •Ï”‚Ì’è‹` */
 char output_file_path[256] = "";
 FILE* fp;
 
-/* ï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½Ì’ï¿½` */
-const char INPUT_NAME_MSG[] = "ï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½ï¿½Í‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B\n";
-const char RESULT_MSG[] = "ï¿½yï¿½ï¿½ï¿½Êz\n";
+/* ƒƒbƒZ[ƒW‚Ì’è‹` */
+const char INPUT_NAME_MSG[] = "–¼‘O‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B\n";
+const char RESULT_MSG[] = "yŒ‹‰Êz\n";
 
-/* ï¿½xï¿½ï¿½ï¿½è”ï¿½Ì’ï¿½` */
+/* Œx’è”‚Ì’è‹` */
 char WARNING_MSG_LIST[256][128];
 
-/* ï¿½Gï¿½ï¿½ï¿½[ï¿½è”ï¿½Ì’ï¿½` */
+/* ƒGƒ‰[’è”‚Ì’è‹` */
 char ERROR_MSG_LIST[256][128];
 
-/* ï¿½Öï¿½ï¿½ÌéŒ¾ */
+/* ŠÖ”‚ÌéŒ¾ */
 void setMsg();
 void procWarning(int);
 void procError(int);
 
 
-/* ï¿½zï¿½Xï¿½gï¿½Ïï¿½ï¿½ÌéŒ¾ */
-/* EXEC SQL BEGIN DECLARE SECTION; */
+/* ƒzƒXƒg•Ï”‚ÌéŒ¾ */
+/* EXEC SQL BEGIN DECLARE SECTION; */ 
 
-    /* varchar username[20]; */
+    /* varchar username[20]; */ 
 struct { unsigned short len; unsigned char arr[20]; } username;
 
-    /* varchar password[20]; */
+    /* varchar password[20]; */ 
 struct { unsigned short len; unsigned char arr[20]; } password;
 
-    /* varchar connect_string[56]; */
+    /* varchar connect_string[56]; */ 
 struct { unsigned short len; unsigned char arr[56]; } connect_string;
 
     int category_count[256];
@@ -212,17 +212,17 @@ struct { unsigned short len; unsigned char arr[56]; } connect_string;
     char subquery[256];
     char query[256];
     char category_query[256];
-/* EXEC SQL END DECLARE SECTION; */
+/* EXEC SQL END DECLARE SECTION; */ 
 
 
 /* EXEC SQL INCLUDE sqlca;
- */
+ */ 
 /*
- * $Header: sqlca.h 24-apr-2003.12:50:58 mkandarp Exp $ sqlca.h
+ * $Header: sqlca.h 24-apr-2003.12:50:58 mkandarp Exp $ sqlca.h 
  */
 
 /* Copyright (c) 1985, 2003, Oracle Corporation.  All rights reserved.  */
-
+ 
 /*
 NAME
   SQLCA : SQL Communications Area.
@@ -240,11 +240,11 @@ NOTES
 
   If the symbol SQLCA_STORAGE_CLASS is defined, then the SQLCA
   will be defined to have this storage class. For example:
-
+ 
     #define SQLCA_STORAGE_CLASS extern
-
+ 
   will define the SQLCA as an extern.
-
+ 
   If the symbol SQLCA_INIT is defined, then the SQLCA will be
   statically initialized. Although this is not necessary in order
   to use the SQLCA, it is a good pgming practice not to have
@@ -261,20 +261,20 @@ NOTES
   that have no embedded SQL, but need to manipulate a sqlca struct
   passed in as a parameter, can set the SQLCA_NONE symbol to avoid
   creation of an extraneous sqlca variable.
-
+ 
 MODIFIED
     lvbcheng   07/31/98 -  long to int
     jbasu      12/12/94 -  Bug 217878: note this is an SOSD file
-    losborne   08/11/92 -  No sqlca var if SQLCA_NONE macro set
+    losborne   08/11/92 -  No sqlca var if SQLCA_NONE macro set 
   Clare      12/06/84 - Ch SQLCA to not be an extern.
   Clare      10/21/85 - Add initialization.
   Bradbury   01/05/86 - Only initialize when SQLCA_INIT set
   Clare      06/12/86 - Add SQLCA_STORAGE_CLASS option.
 */
-
+ 
 #ifndef SQLCA
 #define SQLCA 1
-
+ 
 struct   sqlca
          {
          /* ub1 */ char    sqlcaid[8];
@@ -291,13 +291,13 @@ struct   sqlca
          /* ub1 */ char    sqlext[8];
          };
 
-#ifndef SQLCA_NONE
+#ifndef SQLCA_NONE 
 #ifdef   SQLCA_STORAGE_CLASS
 SQLCA_STORAGE_CLASS struct sqlca sqlca
 #else
          struct sqlca sqlca
 #endif
-
+ 
 #ifdef  SQLCA_INIT
          = {
          {'S', 'Q', 'L', 'C', 'A', ' ', ' ', ' '},
@@ -312,9 +312,9 @@ SQLCA_STORAGE_CLASS struct sqlca sqlca
 #endif
          ;
 #endif
-
+ 
 #endif
-
+ 
 /* end SQLCA */
 
 
@@ -323,51 +323,51 @@ int argc;
 char *argv[];
 {
     int i = 0;
-    int question_num = 0;	// ï¿½ï¿½è”
-    int correct_answers_cnt = 0;	// ï¿½ï¿½ï¿½ï¿½
-    char name[64];	// ï¿½ï¿½ï¿½O
-    char category[64];	// ï¿½ï¿½ï¿½ÌƒJï¿½eï¿½Sï¿½ï¿½
-    char kaito[3];	// ï¿½ï¿½ï¿½[ï¿½Uï¿½Ì‰ï¿½
-    char kaito_msg[5];	// ï¿½ï¿½ï¿½[ï¿½Uï¿½Ì‰ñ“šiï¿½oï¿½Í—pï¿½j
-    char correctness_ary[256][256]; // ï¿½ï¿½ï¿½ëŒ‹ï¿½Ê‚ï¿½ï¿½iï¿½[
-    char choice[4][64]; // ï¿½ï¿½ï¿½Ì‘Iï¿½ï¿½ï¿½ï¿½
-    char output_file_name[64]; // ï¿½oï¿½Íƒtï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½
-	char convert_file_path[256];	// ï¿½ï¿½ï¿½ï¿½ï¿½Rï¿½[ï¿½hï¿½ÏŠï¿½ï¿½ï¿½Ìƒtï¿½@ï¿½Cï¿½ï¿½ï¿½pï¿½X
-    char start_msg[256];	// ï¿½ï¿½ï¿½ÌŠJï¿½nï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½W
-    char question_msg[256];	// ï¿½ï¿½è•¶
-    char choice_msg[256];	// ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½W
-    char result_detail_msg[256]; // ï¿½ï¿½ï¿½ÊÚ×ƒï¿½ï¿½bï¿½Zï¿½[ï¿½W
-    char result_kaito_msg[16];	// ï¿½ñ“šŒï¿½ï¿½Êƒï¿½ï¿½bï¿½Zï¿½[ï¿½W
-    char destination_file_path[128]; // ï¿½ï¿½ï¿½Mï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½pï¿½X
-    char question_no_str[16]; // ï¿½ï¿½ï¿½Mï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½pï¿½X
+    int question_num = 0;	// –â‘è”
+    int correct_answers_cnt = 0;	// ³‰ğ”
+    char name[64];	// –¼‘O
+    char category[64];	// –â‘è‚ÌƒJƒeƒSƒŠ
+    char kaito[3];	// ƒ†[ƒU‚Ì‰ñ“š
+    char kaito_msg[5];	// ƒ†[ƒU‚Ì‰ñ“šio—Í—pj
+    char correctness_ary[256][256]; // ³ŒëŒ‹‰Ê‚ğŠi”[
+    char choice[4][64]; // –â‘è‚Ì‘I‘ğˆ
+    char output_file_name[64]; // o—Íƒtƒ@ƒCƒ‹–¼
+	char convert_file_path[256];	// •¶šƒR[ƒh•ÏŠ·Œã‚Ìƒtƒ@ƒCƒ‹ƒpƒX
+    char start_msg[256];	// –â‘è‚ÌŠJnƒƒbƒZ[ƒW
+    char question_msg[256];	// –â‘è•¶
+    char choice_msg[256];	// ‘I‘ğƒƒbƒZ[ƒW
+    char result_detail_msg[256]; // Œ‹‰ÊÚ×ƒƒbƒZ[ƒW
+    char result_kaito_msg[16];	// ‰ñ“šŒ‹‰ÊƒƒbƒZ[ƒW
+    char destination_file_path[128]; // ‘—Mæƒtƒ@ƒCƒ‹ƒpƒX
+    char question_no_str[16]; // ‘—Mæƒtƒ@ƒCƒ‹ƒpƒX
     double correct_rate = 0;
 
-    /* ï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½iï¿½[ï¿½pï¿½zï¿½ï¿½Éƒï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½ï¿½ï¿½iï¿½[ */
+    /* ƒƒbƒZ[ƒWŠi”[—p”z—ñ‚ÉƒƒbƒZ[ƒW‚ğŠi”[ */
     setMsg();
 
-    /* ï¿½ï¿½ï¿½ï¿½ï¿½`ï¿½Fï¿½bï¿½N */
+    /* ˆø”ƒ`ƒFƒbƒN */
     if (argc != 3) {
     	procError(100);
     	return 100;
     }
 
-    /* ï¿½ï¿½ï¿½Íƒ`ï¿½Fï¿½bï¿½N */
-    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`ï¿½Fï¿½bï¿½N */
+    /* “ü—Íƒ`ƒFƒbƒN */
+    /* •¶š”ƒ`ƒFƒbƒN */
     if (validLength(argv[1], 0, 50)) {
     	procError(101);
     	return 101;
     }
-    /* ï¿½ï¿½ï¿½lï¿½`ï¿½Fï¿½bï¿½N */
+    /* ”’lƒ`ƒFƒbƒN */
     if (validInt(argv[2])) {
     	procError(103);
     	return 103;
     }
-    /* intï¿½^ï¿½Ì”ÍˆÍ‚ğ’´‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`ï¿½Fï¿½bï¿½N */
+    /* intŒ^‚Ì”ÍˆÍ‚ğ’´‚¦‚½‚©‚ğƒ`ƒFƒbƒN */
     if (atoi(argv[2]) < 0) {
 		procError(105);
     	return 105;
     }
-    /* ï¿½ï¿½ï¿½lï¿½å¬ï¿½`ï¿½Fï¿½bï¿½N */
+    /* ”’l‘å¬ƒ`ƒFƒbƒN */
     switch (validSize(atoi(argv[2]), 1, 100)) {
     	case 1:
     		procError(104);
@@ -377,22 +377,22 @@ char *argv[];
         	return 105;
     }
 
-    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïï¿½ï¿½ÉŠiï¿½[ */
+    /* ˆø”‚ğ•Ï”‚ÉŠi”[ */
     strcpy(category, argv[1]);
     question_num = atoi(argv[2]);
 
-    /* ï¿½ï¿½Oï¿½éŒ¾ */
-    /* EXEC SQL WHENEVER SQLERROR GOTO errorpt; */
+    /* —áŠOéŒ¾ */
+    /* EXEC SQL WHENEVER SQLERROR GOTO errorpt; */ 
 
 
-    /* Oracleï¿½Ú‘ï¿½ */
+    /* OracleÚ‘± */
     strcpy(username.arr, USER_NAME);
     username.len=strlen(username.arr);
     strcpy(password.arr, PASSWORD);
     password.len=strlen(password.arr);
     strcpy(connect_string.arr, CONNECT_STRING);
     connect_string.len=strlen(connect_string.arr);
-    /* EXEC SQL CONNECT :username IDENTIFIED BY :password USING :connect_string; */
+    /* EXEC SQL CONNECT :username IDENTIFIED BY :password USING :connect_string; */ 
 
 {
     struct sqlexd sqlstm;
@@ -450,9 +450,9 @@ char *argv[];
 
 
 
-    /* ï¿½Jï¿½eï¿½Sï¿½ï¿½ï¿½ï¿½ï¿½İƒ`ï¿½Fï¿½bï¿½N */
+    /* ƒJƒeƒSƒŠ‘¶İƒ`ƒFƒbƒN */
     sprintf(category_query, "SELECT COUNT(*) FROM question_answer WHERE category = '%s' AND ROWNUM <= %d", category);
-    /* EXEC SQL PREPARE COUNT_CATEGORY_SQL1 FROM :category_query; */
+    /* EXEC SQL PREPARE COUNT_CATEGORY_SQL1 FROM :category_query; */ 
 
 {
     struct sqlexd sqlstm;
@@ -489,9 +489,9 @@ char *argv[];
 }
 
 
-    /* EXEC SQL DECLARE COUNT_CATEGORY_CUR1 CURSOR FOR COUNT_CATEGORY_SQL1; */
+    /* EXEC SQL DECLARE COUNT_CATEGORY_CUR1 CURSOR FOR COUNT_CATEGORY_SQL1; */ 
 
-    /* EXEC SQL OPEN COUNT_CATEGORY_CUR1; */
+    /* EXEC SQL OPEN COUNT_CATEGORY_CUR1; */ 
 
 {
     struct sqlexd sqlstm;
@@ -513,7 +513,7 @@ char *argv[];
 }
 
 
-    /* EXEC SQL FETCH COUNT_CATEGORY_CUR1 INTO category_count; */
+    /* EXEC SQL FETCH COUNT_CATEGORY_CUR1 INTO category_count; */ 
 
 {
     struct sqlexd sqlstm;
@@ -553,7 +553,7 @@ char *argv[];
 }
 
 
-    /* EXEC SQL CLOSE COUNT_CATEGORY_CUR1; */
+    /* EXEC SQL CLOSE COUNT_CATEGORY_CUR1; */ 
 
 {
     struct sqlexd sqlstm;
@@ -577,12 +577,12 @@ char *argv[];
     	return 102;
     }
 
-    /* ï¿½Nï¿½Gï¿½ï¿½ */
+    /* ƒNƒGƒŠ */
     strcpy(subquery, "SELECT DBMS_RANDOM.RANDOM() AS rand, question_answer.* FROM question_answer ORDER BY rand");
     sprintf(query, "SELECT id, category, question, choice, answer, q_total, correct_total FROM (%s) WHERE category = '%s' AND ROWNUM <= %d", subquery, category, question_num);
 
-    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½queryï¿½ï¿½ï¿½ï¿½Í‚ï¿½ï¿½ï¿½SQL1ï¿½Æ‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½wï¿½è‚·ï¿½ï¿½ */
-    /* EXEC SQL PREPARE SQL1 FROM :query; */
+    /* •¶š—ñquery‚ğ‰ğÍ‚µ‚ÄSQL1‚Æ‚¢‚¤–¼‘O‚ğw’è‚·‚é */
+    /* EXEC SQL PREPARE SQL1 FROM :query; */ 
 
 {
     struct sqlexd sqlstm;
@@ -619,11 +619,11 @@ char *argv[];
 }
 
 
-    /* CUR1ï¿½Æ‚ï¿½ï¿½ï¿½ï¿½Jï¿½[ï¿½\ï¿½ï¿½ï¿½ï¿½SQL1ï¿½ÉŠÖ˜Aï¿½tï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ */
-    /* EXEC SQL DECLARE CUR1 CURSOR FOR SQL1; */
+    /* CUR1‚Æ‚¢‚¤ƒJ[ƒ\ƒ‹‚ğSQL1‚ÉŠÖ˜A•t‚¯‚ğ‚µ‚Ä‚¢‚é */
+    /* EXEC SQL DECLARE CUR1 CURSOR FOR SQL1; */ 
 
-    /* Oracleï¿½Jï¿½[ï¿½\ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½è“–ï¿½ÄAï¿½ï¿½ï¿½Íƒzï¿½Xï¿½gï¿½Ïï¿½ï¿½Éƒoï¿½Cï¿½ï¿½ï¿½hï¿½ï¿½ï¿½Aï¿½â‡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½Ü‚ï¿½ */
-    /* EXEC SQL OPEN CUR1; */
+    /* OracleƒJ[ƒ\ƒ‹‚ğŠ„‚è“–‚ÄA“ü—ÍƒzƒXƒg•Ï”‚ÉƒoƒCƒ“ƒh‚µA–â‡‚¹‚ğÀs‚µ‚Ü‚· */
+    /* EXEC SQL OPEN CUR1; */ 
 
 {
     struct sqlexd sqlstm;
@@ -645,8 +645,8 @@ char *argv[];
 }
 
 
-    /* ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½gï¿½ï¿½ï¿½Ì—ï¿½lï¿½ï¿½INTOï¿½ï¿½Ì‘Î‰ï¿½ï¿½ï¿½ï¿½ï¿½zï¿½Xï¿½gï¿½Ïï¿½ï¿½ÉŠï¿½ï¿½è“–ï¿½Ä‚ï¿½ï¿½ï¿½Aï¿½Jï¿½[ï¿½\ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìsï¿½Éiï¿½ß‚ï¿½  */
-    /* EXEC SQL FETCH CUR1 INTO h_id, h_category, h_question, h_choice,h_answer, h_q_total,h_correct_total; */
+    /* ‘I‘ğƒŠƒXƒg“à‚Ì—ñ’l‚ğINTO‹å‚Ì‘Î‰‚·‚éƒzƒXƒg•Ï”‚ÉŠ„‚è“–‚Ä‚½ŒãAƒJ[ƒ\ƒ‹‚ğŸ‚Ìs‚Éi‚ß‚é  */
+    /* EXEC SQL FETCH CUR1 INTO h_id, h_category, h_question, h_choice,h_answer, h_q_total,h_correct_total; */ 
 
 {
     struct sqlexd sqlstm;
@@ -740,8 +740,8 @@ char *argv[];
 }
 
 
-    /* ï¿½Jï¿½[ï¿½\ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½pï¿½Ö~ï¿½È~FETCHï¿½Å‚ï¿½ï¿½È‚ï¿½ï¿½B */
-    /* EXEC SQL CLOSE CUR1; */
+    /* ƒJ[ƒ\ƒ‹‚ğg—p‹Ö~ˆÈ~FETCH‚Å‚«‚È‚¢B */
+    /* EXEC SQL CLOSE CUR1; */ 
 
 {
     struct sqlexd sqlstm;
@@ -761,7 +761,7 @@ char *argv[];
 
 
 
-    /* ï¿½ï¿½è”ï¿½`ï¿½Fï¿½bï¿½N */
+    /* –â‘è”ƒ`ƒFƒbƒN */
     i = question_num - 1;
     if (h_id[i] == 0) {
 		procWarning(1);
@@ -774,7 +774,7 @@ char *argv[];
     	}
     }
 
-    /* ï¿½eï¿½Xï¿½gï¿½ï¿½ï¿½sï¿½Ò‚Ì–ï¿½ï¿½Oï¿½Ì“ï¿½ï¿½Í‚ï¿½ï¿½ó‚¯•tï¿½ï¿½ï¿½ï¿½B */
+    /* ƒeƒXƒgÀsÒ‚Ì–¼‘O‚Ì“ü—Í‚ğó‚¯•t‚¯‚éB */
     printf(INPUT_NAME_MSG);
     while (1) {
     	if (getsn(name, 64) == NULL) {
@@ -782,7 +782,7 @@ char *argv[];
     	}
         strcpy(name, trim(name));
 
-        /* ï¿½ï¿½ï¿½Oï¿½Ì•ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`ï¿½Fï¿½bï¿½N */
+        /* –¼‘O‚Ì•¶š”ƒ`ƒFƒbƒN */
         if (validLength(name, 0, 30)) {
         	procWarning(5);
         } else {
@@ -790,33 +790,33 @@ char *argv[];
         }
     }
 
-    /* ï¿½ï¿½ï¿½İ‚Ì“ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ“¾ */
+    /* Œ»İ‚Ì“ú‚ğæ“¾ */
     char datetime[16];
     struct tm *local = getNowDateTime();
     sprintf(datetime, "%4d%02d%02d%02d%02d%02d", local->tm_year, local->tm_mon, local->tm_mday, local->tm_hour, local->tm_min, local->tm_sec);
 
-    /* ï¿½oï¿½Íƒtï¿½@ï¿½Cï¿½ï¿½ */
+    /* o—Íƒtƒ@ƒCƒ‹ */
     sprintf(output_file_name, "%s-%s-%s.txt", datetime, category, name);
     sprintf(output_file_path, "%s%s", OUTPUT_PATH, output_file_name);
 
-    /* ï¿½oï¿½Íï¿½fï¿½Bï¿½ï¿½ï¿½Nï¿½gï¿½ï¿½ï¿½Ìì¬ */
+    /* o—ÍæƒfƒBƒŒƒNƒgƒŠ‚Ìì¬ */
     _mkdir(OUTPUT_PATH);
 
-    /* ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½[ï¿½vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
+    /* ƒtƒ@ƒCƒ‹‚ğƒI[ƒvƒ“‚·‚é */
 	if ((fp = fopen(output_file_path, "w")) == NULL) {
-		// ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Iï¿½[ï¿½vï¿½ï¿½ï¿½Gï¿½ï¿½ï¿½[
+		// ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“ƒGƒ‰[
 		procError(106);;
     	return 106;
 	}
 
-    /* ï¿½ï¿½Ê•\ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½iOSï¿½Ë‘ï¿½ï¿½j */
+    /* ‰æ–Ê•\¦‚ğÁ‚·iOSˆË‘¶j */
     system("cls");
 
-	/* ï¿½oï¿½èˆï¿½ï¿½ */
-    sprintf(start_msg, "*** %sï¿½ÉŠÖ‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½%dï¿½ï¿½oï¿½è‚µï¿½Ü‚ï¿½ï¿½B ***\n", category, question_num);
+	/* o‘èˆ— */
+    sprintf(start_msg, "*** %s‚ÉŠÖ‚·‚é–â‘è‚ğ%d–âo‘è‚µ‚Ü‚·B ***\n", category, question_num);
     printf("%s", start_msg);
     if (fputs(start_msg , fp) == EOF) {
-    	// ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İƒGï¿½ï¿½ï¿½[
+    	// ƒtƒ@ƒCƒ‹‘‚«‚İƒGƒ‰[
 		fclose(fp);
 		deleteFile(output_file_path);
 		procError(106);
@@ -831,11 +831,11 @@ char *argv[];
     		break;
     	}
 
-        /* ï¿½oï¿½ï¿½ */
+        /* o‘è */
         sprintf(question_msg, "Q%d.%s\n", i+1, trim(h_question[i]));
         printf("%s", question_msg);
         if (fputs(question_msg , fp) == EOF) {
-        	// ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İƒGï¿½ï¿½ï¿½[
+        	// ƒtƒ@ƒCƒ‹‘‚«‚İƒGƒ‰[
     		fclose(fp);
     		deleteFile(output_file_path);
     		procError(106);
@@ -845,14 +845,14 @@ char *argv[];
         sprintf(choice_msg, "%s %s %s %s\n", choice[0], choice[1], choice[2], choice[3]);
         printf(choice_msg);
         if (fputs(choice_msg , fp) == EOF) {
-        	// ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İƒGï¿½ï¿½ï¿½[
+        	// ƒtƒ@ƒCƒ‹‘‚«‚İƒGƒ‰[
     		fclose(fp);
     		deleteFile(output_file_path);
     		procError(106);
     		return 106;
         }
 
-        /* ï¿½ñ“šï¿½ï¿½ï¿½ */
+        /* ‰ñ“šˆ— */
         while (1) {
         	if (getsn(kaito, 3) == NULL) {
         		exit(0);
@@ -865,22 +865,22 @@ char *argv[];
         }
         sprintf(kaito_msg, "%s\n", kaito);
     	if (fputs(kaito_msg , fp) == EOF) {
-    		// ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İƒGï¿½ï¿½ï¿½[
+    		// ƒtƒ@ƒCƒ‹‘‚«‚İƒGƒ‰[
     		fclose(fp);
     		deleteFile(output_file_path);
     		procError(106);
     		return 106;
     	}
 
-        /* ï¿½ï¿½ï¿½ë”»ï¿½ï¿½ */
+        /* ³Œë”»’è */
         if (strcmp(h_answer[i], kaito) == 0){
-            strcpy(correctness_ary[i], "ï¿½ï¿½");
+            strcpy(correctness_ary[i], "›");
             correct_answers_cnt++;
 
-            /* ï¿½fï¿½[ï¿½^ï¿½xï¿½[ï¿½Xï¿½Xï¿½Vï¿½ï¿½ï¿½ï¿½ */
+            /* ƒf[ƒ^ƒx[ƒXXVˆ— */
             /* EXEC SQL UPDATE question_answer
                 SET q_total = q_total + 1, correct_total = correct_total + 1
-                WHERE id = :h_id[i]; */
+                WHERE id = :h_id[i]; */ 
 
 {
             struct sqlexd sqlstm;
@@ -919,12 +919,12 @@ correct_total=(correct_total+1) where id=:b0";
 
 
         } else {
-            strcpy(correctness_ary[i], "ï¿½~");
+            strcpy(correctness_ary[i], "~");
 
-            /* ï¿½fï¿½[ï¿½^ï¿½xï¿½[ï¿½Xï¿½Xï¿½Vï¿½ï¿½ï¿½ï¿½ */
+            /* ƒf[ƒ^ƒx[ƒXXVˆ— */
             /* EXEC SQL UPDATE question_answer
                 SET q_total = q_total + 1
-                WHERE id = :h_id[i]; */
+                WHERE id = :h_id[i]; */ 
 
 {
             struct sqlexd sqlstm;
@@ -966,7 +966,7 @@ where id=:b0";
 
         printf("%s", SEPARATE_MSG);
         if (fputs(SEPARATE_MSG , fp) == EOF) {
-        	// ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İƒGï¿½ï¿½ï¿½[
+        	// ƒtƒ@ƒCƒ‹‘‚«‚İƒGƒ‰[
     		fclose(fp);
     		deleteFile(output_file_path);
     		procError(106);
@@ -974,10 +974,10 @@ where id=:b0";
         }
     }
 
-    /* ï¿½ï¿½ï¿½Êoï¿½ï¿½ */
+    /* Œ‹‰Êo—Í */
 	printf("%s", RESULT_MSG);
     if (fputs(RESULT_MSG , fp) == EOF) {
-    	// ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İƒGï¿½ï¿½ï¿½[
+    	// ƒtƒ@ƒCƒ‹‘‚«‚İƒGƒ‰[
 		fclose(fp);
 		deleteFile(output_file_path);
 		procError(106);
@@ -985,13 +985,13 @@ where id=:b0";
     }
     correct_rate = (double)correct_answers_cnt / (double)question_num * 100;
     if (correct_rate != 0) {
-    	/* ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½È‰ï¿½ï¿½ï¿½Ø‚ï¿½Ì‚Ä‚é‚½ï¿½ï¿½ */
+    	/* ¬”“_ˆÈ‰º‚ğØ‚èÌ‚Ä‚é‚½‚ß */
     	correct_rate -= 0.5;
     }
-    sprintf(result_detail_msg, "%dï¿½â’†%dï¿½â³ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½ï¿½Bï¿½iï¿½ï¿½ï¿½ğ—¦F %.0f%%ï¿½j\n", question_num, correct_answers_cnt, correct_rate);
+    sprintf(result_detail_msg, "%d–â’†%d–â³‰ğ‚µ‚Ü‚µ‚½Bi³‰ğ—¦F %.0f%%j\n", question_num, correct_answers_cnt, correct_rate);
     printf("%s", result_detail_msg);
     if (fputs(result_detail_msg , fp) == EOF) {
-    	// ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İƒGï¿½ï¿½ï¿½[
+    	// ƒtƒ@ƒCƒ‹‘‚«‚İƒGƒ‰[
 		fclose(fp);
 		deleteFile(output_file_path);
 		procError(106);
@@ -1000,15 +1000,15 @@ where id=:b0";
     for (int j=0; j<i; j++) {
     	sprintf(question_no_str, "%s%d.", "Q", j+1);
     	sprintf(result_kaito_msg, "%-5s%s", question_no_str, correctness_ary[j]);
-    	if (strcmp(correctness_ary[j], "ï¿½~") == 0) {
-    		/* ï¿½ï¿½ï¿½ï¿½ï¿½ğ•¶ï¿½ï¿½ï¿½É•tï¿½^ */
-        	sprintf(result_kaito_msg, "%s ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½%s\n", result_kaito_msg, h_answer[j]);
+    	if (strcmp(correctness_ary[j], "~") == 0) {
+    		/* ³‰ğ‚ğ•¶š—ñ‚É•t—^ */
+        	sprintf(result_kaito_msg, "%s ³‰ğ‚Í%s\n", result_kaito_msg, h_answer[j]);
     	} else {
         	sprintf(result_kaito_msg, "%s\n", result_kaito_msg);
     	}
     	printf("%s", result_kaito_msg);
         if (fputs(result_kaito_msg , fp) == EOF) {
-        	// ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İƒGï¿½ï¿½ï¿½[
+        	// ƒtƒ@ƒCƒ‹‘‚«‚İƒGƒ‰[
     		fclose(fp);
     		deleteFile(output_file_path);
     		procError(106);
@@ -1016,8 +1016,8 @@ where id=:b0";
         }
     }
 
-    /* ï¿½Rï¿½~ï¿½bï¿½g */
-    /* EXEC SQL COMMIT; */
+    /* ƒRƒ~ƒbƒg */
+    /* EXEC SQL COMMIT; */ 
 
 {
     struct sqlexd sqlstm;
@@ -1037,49 +1037,49 @@ where id=:b0";
 
 
 
-    /* ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½oï¿½ï¿½ */
-    printf("ï¿½u%sï¿½vï¿½Æ‚ï¿½ï¿½ï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½Åoï¿½Í‚ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½ï¿½B\n", output_file_name);
+    /* ƒtƒ@ƒCƒ‹–¼o—Í */
+    printf("u%sv‚Æ‚¢‚¤ƒtƒ@ƒCƒ‹–¼‚Åo—Í‚³‚ê‚Ü‚µ‚½B\n", output_file_name);
 
-    /* ï¿½oï¿½bï¿½tï¿½@ï¿½ï¿½ï¿½oï¿½Í‚ï¿½ï¿½ï¿½B */
+    /* ƒoƒbƒtƒ@‚ğo—Í‚·‚éB */
     fflush(fp);
 
-    /* ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½[ï¿½Y */
+    /* ƒtƒ@ƒCƒ‹‚ğƒNƒ[ƒY */
     fclose(fp);
 
-    /* ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½]ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
-    /* ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½]ï¿½ï¿½ï¿½sï¿½Â”\ï¿½Èê‡ï¿½ÍŒxï¿½ï¿½ï¿½\ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½Lï¿½bï¿½v */
+    /* ƒtƒ@ƒCƒ‹“]‘—ˆ— */
+    /* ƒtƒ@ƒCƒ‹“]‘—•s‰Â”\‚Èê‡‚ÍŒx•\¦‚ğ‚µAˆ—‚ğƒXƒLƒbƒv */
     if (existWinSCP() != 0) {
-		/* ï¿½]ï¿½ï¿½ï¿½pï¿½cï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ */
+		/* “]‘——pƒc[ƒ‹‚ª‚È‚¢ */
     	procWarning(3);
-    	/* ï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½Lï¿½bï¿½vï¿½ï¿½ï¿½ï¿½ï¿½È‚Ì‚ÅAï¿½ï¿½ï¿½ï¿½Iï¿½ï¿½ */
+    	/* ˆ—ƒXƒLƒbƒvˆµ‚¢‚È‚Ì‚ÅA³íI—¹ */
     	return 0;
     }
     if (existIconv() != 0) {
-		/* ï¿½ï¿½ï¿½ï¿½ï¿½Rï¿½[ï¿½hï¿½ÏŠï¿½ï¿½pï¿½cï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ */
+		/* •¶šƒR[ƒh•ÏŠ·—pƒc[ƒ‹‚ª‚È‚¢ */
     	procWarning(4);
-    	/* ï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½Lï¿½bï¿½vï¿½ï¿½ï¿½ï¿½ï¿½È‚Ì‚ÅAï¿½ï¿½ï¿½ï¿½Iï¿½ï¿½ */
+    	/* ˆ—ƒXƒLƒbƒvˆµ‚¢‚È‚Ì‚ÅA³íI—¹ */
     	return 0;
     }
 
-	/* ï¿½]ï¿½ï¿½ï¿½pï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Ìì¬*/
+	/* “]‘——pƒtƒ@ƒCƒ‹‚Ìì¬*/
 	if (iconvFile(output_file_path, convert_file_path, "sjis", "UTF-8") != 0) {
-		/* ï¿½ï¿½ï¿½ï¿½ï¿½Gï¿½ï¿½ï¿½Rï¿½[ï¿½hï¿½ï¿½ï¿½s */
+		/* •¶šƒGƒ“ƒR[ƒh¸”s */
 		procWarning(4);
-    	/* ï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½Lï¿½bï¿½vï¿½ï¿½ï¿½ï¿½ï¿½È‚Ì‚ÅAï¿½ï¿½ï¿½ï¿½Iï¿½ï¿½ */
+    	/* ˆ—ƒXƒLƒbƒvˆµ‚¢‚È‚Ì‚ÅA³íI—¹ */
     	return 0;
 	}
 
-	/* ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½]ï¿½ï¿½ */
+	/* ƒtƒ@ƒCƒ‹“]‘— */
 	strcpy(destination_file_path, DESTINATION_DIR);
 	strcat(destination_file_path, output_file_name);
 	if (putFile(output_file_path, destination_file_path) != 0) {
-		/* ï¿½]ï¿½ï¿½ï¿½ï¿½ï¿½s */
+		/* “]‘—¸”s */
 		procWarning(3);
-    	/* ï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½Lï¿½bï¿½vï¿½ï¿½ï¿½ï¿½ï¿½È‚Ì‚ÅAï¿½ï¿½ï¿½ï¿½Iï¿½ï¿½ */
+    	/* ˆ—ƒXƒLƒbƒvˆµ‚¢‚È‚Ì‚ÅA³íI—¹ */
 		return 0;
 	}
 
-	/* ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½]ï¿½ï¿½ï¿½Ü‚Åï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Aï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½íœï¿½ï¿½ï¿½ï¿½ */
+	/* ƒtƒ@ƒCƒ‹“]‘—‚Ü‚Å¬Œ÷‚µ‚½‚çAƒtƒ@ƒCƒ‹‚ğíœ‚·‚é */
 	deleteFile(output_file_path);
 	deleteFile(convert_file_path);
 
@@ -1088,11 +1088,11 @@ where id=:b0";
 errorpt:
     //printf("\n\n%-70s \n",sqlca.sqlerrm.sqlerrmc);
 
-    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½vï¿½ï¿½ï¿½ */
-    /* EXEC SQL WHENEVER SQLERROR CONTINUE; */
+    /* –³ŒÀƒ‹[ƒv‰ñ”ğ */
+    /* EXEC SQL WHENEVER SQLERROR CONTINUE; */ 
 
-    /* ï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½oï¿½bï¿½N */
-	/* EXEC SQL ROLLBACK; */
+    /* ƒ[ƒ‹ƒoƒbƒN */
+	/* EXEC SQL ROLLBACK; */ 
 
 {
  struct sqlexd sqlstm;
@@ -1111,12 +1111,12 @@ errorpt:
 
 
 
-	/* ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½Jï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ê‡ï¿½Â‚ï¿½ï¿½ï¿½ */
+	/* ƒtƒ@ƒCƒ‹‚ğŠJ‚¢‚Ä‚¢‚éê‡•Â‚¶‚é */
 	if (fp != NULL) {
 		fclose(fp);
 	}
 
-	/* ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ‚ï¿½ï¿½ï¿½ê‡ï¿½Ííœï¿½ï¿½ï¿½ï¿½ */
+	/* ƒtƒ@ƒCƒ‹‚ª‘¶İ‚·‚éê‡‚Ííœ‚·‚é */
 	if (existFile(output_file_path) == 1) {
 		deleteFile(output_file_path);
 	}
@@ -1125,48 +1125,48 @@ errorpt:
 }
 
 void setMsg() {
-	strcpy(WARNING_MSG_LIST[1], "ï¿½wï¿½è‚³ï¿½ê‚½ï¿½ï¿½ï¿½É‘Î‚ï¿½ï¿½Ä–ï¿½è”ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½Ü‚ï¿½ï¿½Bï¿½oï¿½^ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½è‚³ï¿½ï¿½Ü‚ï¿½ï¿½B\n");
-	strcpy(WARNING_MSG_LIST[2], "ï¿½ï¿½ï¿½Ö‚Ì‰ñ“š‚ÍuAï¿½vï¿½uBï¿½vï¿½uCï¿½vï¿½uDï¿½vï¿½ï¿½ï¿½ï¿½ï¿½ê‚©ï¿½Å“ï¿½ï¿½Í‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B\n");
-	strcpy(WARNING_MSG_LIST[3], "ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½]ï¿½ï¿½ï¿½ï¿½ï¿½Å‚ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ßƒï¿½ï¿½[ï¿½Jï¿½ï¿½ï¿½Å‚Ì‚İ•Û‘ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½B\n");
-	strcpy(WARNING_MSG_LIST[4], "Linuxï¿½pï¿½ÏŠï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Ìì¬ï¿½Éï¿½ï¿½sï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½ï¿½Bï¿½ï¿½ï¿½[ï¿½Jï¿½ï¿½ï¿½Å‚Ì‚İ•Û‘ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½B\n");
-	strcpy(WARNING_MSG_LIST[5], "ï¿½ï¿½ï¿½Oï¿½ï¿½30ï¿½ï¿½ï¿½ï¿½ï¿½È“ï¿½ï¿½Å“ï¿½ï¿½Í‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B\n");
-	strcpy(ERROR_MSG_LIST[100], "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½wï¿½è‚³ï¿½ï¿½Ä‚ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½Bï¿½ï¿½ï¿½Ì‚æ‚¤ï¿½ÈŒ`ï¿½ï¿½ï¿½Åï¿½ï¿½sï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B qa.exe [ï¿½Jï¿½eï¿½Sï¿½ï¿½] [ï¿½ï¿½è”]\n");
-	strcpy(ERROR_MSG_LIST[101], "ï¿½Jï¿½eï¿½Sï¿½ï¿½ï¿½Ì•ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½B\n");
-	strcpy(ERROR_MSG_LIST[102], "ï¿½wï¿½è‚³ï¿½ê‚½ï¿½Jï¿½eï¿½Sï¿½ï¿½ï¿½Í‘ï¿½ï¿½İ‚ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½B\n");
-	strcpy(ERROR_MSG_LIST[103], "ï¿½ï¿½è”ï¿½Í”ï¿½ï¿½pï¿½ï¿½ï¿½ï¿½ï¿½Å“ï¿½ï¿½Í‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B\n");
-	strcpy(ERROR_MSG_LIST[104], "ï¿½ï¿½è”ï¿½ï¿½1ï¿½Èï¿½Ì’lï¿½Å“ï¿½ï¿½Í‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B\n");
-	strcpy(ERROR_MSG_LIST[105], "ï¿½ï¿½è”ï¿½ï¿½100ï¿½È‰ï¿½ï¿½Ì’lï¿½Å“ï¿½ï¿½Í‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B\n");
-	strcpy(ERROR_MSG_LIST[106], "ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ‚Éï¿½ï¿½sï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½ï¿½B\n");
-	strcpy(ERROR_MSG_LIST[107], "ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Ì“]ï¿½ï¿½ï¿½Éï¿½ï¿½sï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½ï¿½B\n");
-	strcpy(ERROR_MSG_LIST[255], "ï¿½vï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ùï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½ï¿½B\n");
+	strcpy(WARNING_MSG_LIST[1], "w’è‚³‚ê‚½”‚É‘Î‚µ‚Ä–â‘è”‚ª•s‘«‚µ‚Ä‚¢‚Ü‚·B“o˜^‚³‚ê‚Ä‚¢‚é–â‘è‚Ì”‚¾‚¯o‘è‚³‚ê‚Ü‚·B\n");
+	strcpy(WARNING_MSG_LIST[2], "–â‘è‚Ö‚Ì‰ñ“š‚ÍuAvuBvuCvuDv‚¢‚¸‚ê‚©‚Å“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B\n");
+	strcpy(WARNING_MSG_LIST[3], "ƒtƒ@ƒCƒ‹“]‘—‚ª‚Å‚«‚È‚¢‚½‚ßƒ[ƒJƒ‹‚Å‚Ì‚İ•Û‘¶‚³‚ê‚Ü‚·B\n");
+	strcpy(WARNING_MSG_LIST[4], "Linux—p•ÏŠ·ƒtƒ@ƒCƒ‹‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½Bƒ[ƒJƒ‹‚Å‚Ì‚İ•Û‘¶‚³‚ê‚Ü‚·B\n");
+	strcpy(WARNING_MSG_LIST[5], "–¼‘O‚Í30•¶šˆÈ“à‚Å“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B\n");
+	strcpy(ERROR_MSG_LIST[100], "ˆø”‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñBŸ‚Ì‚æ‚¤‚ÈŒ`®‚ÅÀs‚µ‚Ä‚­‚¾‚³‚¢B qa.exe [ƒJƒeƒSƒŠ] [–â‘è”]\n");
+	strcpy(ERROR_MSG_LIST[101], "ƒJƒeƒSƒŠ‚Ì•¶š”‚ª‘½‚·‚¬‚Ü‚·B\n");
+	strcpy(ERROR_MSG_LIST[102], "w’è‚³‚ê‚½ƒJƒeƒSƒŠ‚Í‘¶İ‚µ‚Ü‚¹‚ñB\n");
+	strcpy(ERROR_MSG_LIST[103], "–â‘è”‚Í”¼Šp”š‚Å“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B\n");
+	strcpy(ERROR_MSG_LIST[104], "–â‘è”‚Í1ˆÈã‚Ì’l‚Å“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B\n");
+	strcpy(ERROR_MSG_LIST[105], "–â‘è”‚Í100ˆÈ‰º‚Ì’l‚Å“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B\n");
+	strcpy(ERROR_MSG_LIST[106], "ƒtƒ@ƒCƒ‹‘‚«‚İ‚É¸”s‚µ‚Ü‚µ‚½B\n");
+	strcpy(ERROR_MSG_LIST[107], "ƒtƒ@ƒCƒ‹‚Ì“]‘—‚É¸”s‚µ‚Ü‚µ‚½B\n");
+	strcpy(ERROR_MSG_LIST[255], "ƒvƒƒOƒ‰ƒ€‚ªˆÙíI—¹‚µ‚Ü‚µ‚½B\n");
 }
 
 /**
- * ï¿½xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½B
- * @param warning_code: ï¿½xï¿½ï¿½ï¿½Rï¿½[ï¿½h
+ * Œxˆ—‚ğs‚¤B
+ * @param warning_code: ŒxƒR[ƒh
  */
 void procWarning(int warning_code) {
 	char *p, *msg[256];
 	strcpy(msg, WARNING_MSG_LIST[warning_code]);
-	/* PowerShellï¿½pï¿½ÌƒGï¿½Xï¿½Pï¿½[ï¿½vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½tï¿½^ */
+	/* PowerShell—p‚ÌƒGƒXƒP[ƒv•¶š‚ğ•t—^ */
 	while ((p = strchr(msg, ' '))!=NULL) *p = '`';
-	/* ï¿½xï¿½ï¿½ï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½ï¿½ï¿½oï¿½ï¿½ */
+	/* ŒxƒƒbƒZ[ƒW‚ğo—Í */
 	printf("[WARNING][%d]%s", warning_code, WARNING_MSG_LIST[warning_code]);
-	/* ï¿½Cï¿½xï¿½ï¿½ï¿½gï¿½oï¿½^ */
+	/* ƒCƒxƒ“ƒg“o˜^ */
 	registerEvent("Warning", warning_code, msg);
 }
 
 /**
- * ï¿½Gï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½B
- * @param error_code: ï¿½Gï¿½ï¿½ï¿½[ï¿½Rï¿½[ï¿½h
+ * ƒGƒ‰[ˆ—‚ğs‚¤B
+ * @param error_code: ƒGƒ‰[ƒR[ƒh
  */
 void procError(int error_code) {
 	char *p, *msg[256];
 	strcpy(msg, ERROR_MSG_LIST[error_code]);
-	/* PowerShellï¿½pï¿½ÌƒGï¿½Xï¿½Pï¿½[ï¿½vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½tï¿½^ */
+	/* PowerShell—p‚ÌƒGƒXƒP[ƒv•¶š‚ğ•t—^ */
 	while ((p = strchr(msg, ' '))!=NULL) *p = '`';
-	/* ï¿½Gï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½ï¿½ï¿½oï¿½ï¿½ */
+	/* ƒGƒ‰[ƒƒbƒZ[ƒW‚ğo—Í */
 	printf("[ERROR][%d]%s", error_code, ERROR_MSG_LIST[error_code]);
-	/* ï¿½Cï¿½xï¿½ï¿½ï¿½gï¿½oï¿½^ */
+	/* ƒCƒxƒ“ƒg“o˜^ */
 	registerEvent("Error", error_code, msg);
 }
